@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 export default function SearchBar({ setQueryParametr, setCityList }) {
   const [city, setCity] = useState("");
@@ -22,7 +21,7 @@ export default function SearchBar({ setQueryParametr, setCityList }) {
         onChange={(e) => setCity(e.currentTarget.value)}
         value={city}
       />
-      <FontAwesomeIcon icon={solid("search")} onClick={getCityWeather} />
+      <button onClick={getCityWeather}>Get weather</button>
     </>
   );
 }
