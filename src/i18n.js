@@ -5,12 +5,12 @@ import LanguageDetector from "i18next-browser-languagedetector";
 const resources = {
   en: {
     translation: {
-      "Welcome to React": "Welcome to React and react-i18next",
+      "Welcome to React": "Welcome to \"yourweather\" app",
     },
   },
   ua: {
     translation: {
-      "Welcome to React": "Вітаємо в Реакт!",
+      "Welcome to React": "Вітаємо в \"yourweather\" додатку",
     },
   },
 };

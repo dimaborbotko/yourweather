@@ -7,15 +7,15 @@ import MainScreen from "./App/mainScreen/MainScreen";
 import Layout from "./components/Layout";
 
 function App() {
-  useEffect(() => {
-    axios
-      .get(
-        `${URL_WEATHER_API}/weather?lat=44.34&lon=10.99&appid=${WEAHTER_API}`
-      )
-      .then((response) => {
-        console.log(response.data);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${URL_WEATHER_API}/weather?q=Lviv&appid=${WEAHTER_API}`
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //     });
+  // }, []);
   return (
     <Router>
       <Routes>
