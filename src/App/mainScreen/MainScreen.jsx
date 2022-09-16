@@ -20,19 +20,31 @@ export default function MainScreen() {
     axios
       .all(linksWithoutDublicates.map((link) => axios.get(link)))
       .then((data) => {
-        data
-          .filter((cityItem) => {
-            return cityItem.data.name !== cityList.map((city) => city);
-          })
-          .map((result) => setWeatherInfo((prev) => [...prev, result]));
-      }); 
+        data.map((result) => setWeatherInfo((prev) => [...prev, result]));
+      });
     console.log(weatherInfo);
-  }; 
+  };
+
+  const handleAddCity = () => {
+    axios
+      .get(
+        `${URL_WEATHER_API}/weather?q=${queryParametr.q}&appid=${WEAHTER_API}`
+      )
+      .then((result) => {
+        setWeatherInfo((prev) => [...prev, result]);
+      });
+  };
 
   useEffect(() => {
-    getSavedWeatherCard();
-    console.log(linksWithoutDublicates);
+    if (weatherInfo.length === 0) {
+      getSavedWeatherCard();
+      console.log(linksWithoutDublicates);
+    } else if (weatherInfo.length > 0) {
+      handleAddCity();
+    }
   }, [queryParametr.q]);
+
+  useEffect(() => {}, [queryParametr.q]);
 
   return (
     <Container>
