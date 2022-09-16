@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function SearchBar({ setQueryParametr, setCityList }) {
   const [city, setCity] = useState("");
@@ -10,7 +9,6 @@ export default function SearchBar({ setQueryParametr, setCityList }) {
       setCity("");
       setCityList((prev) => [...prev, city]);
     }
-
     console.log(city);
   };
 

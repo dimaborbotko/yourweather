@@ -11,18 +11,23 @@ export default function MainScreen() {
   const [weatherInfo, setWeatherInfo] = useState([]);
   const [cityList, setCityList] = useLocalStorage("cities", []);
 
+
+
   const linksGetWeather = cityList.map((city) => {
     return `${URL_WEATHER_API}/weather?q=${city}&appid=${WEAHTER_API}`;
   });
   const linksWithoutDublicates = [...new Set(linksGetWeather)];
 
+  let compareArrays = linksGetWeather.length === weatherInfo.length;
+
+  console.log(compareArrays);
+
   const getSavedWeatherCard = () => {
-    axios
+    axios 
       .all(linksWithoutDublicates.map((link) => axios.get(link)))
       .then((data) => {
         data.map((result) => setWeatherInfo((prev) => [...prev, result]));
       });
-    console.log(weatherInfo);
   };
 
   const handleAddCity = () => {
@@ -39,9 +44,10 @@ export default function MainScreen() {
     if (weatherInfo.length === 0) {
       getSavedWeatherCard();
       console.log(linksWithoutDublicates);
-    } else if (weatherInfo.length > 0) {
+    } else if (weatherInfo.length > 0 && compareArrays) {
       handleAddCity();
     }
+    console.log(weatherInfo);
   }, [queryParametr.q]);
 
   useEffect(() => {}, [queryParametr.q]);
