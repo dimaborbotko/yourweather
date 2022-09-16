@@ -6,8 +6,8 @@ export default function SearchBar({ setQueryParametr, setCityList }) {
   const getCityWeather = () => {
     if (city !== "") {
       setQueryParametr({ q: city });
-      setCity("");
       setCityList((prev) => [...prev, city]);
+      setCity("");
     }
     console.log(city);
   };

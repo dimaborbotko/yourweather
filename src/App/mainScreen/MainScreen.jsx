@@ -11,19 +11,23 @@ export default function MainScreen() {
   const [weatherInfo, setWeatherInfo] = useState([]);
   const [cityList, setCityList] = useLocalStorage("cities", []);
 
-
-
   const linksGetWeather = cityList.map((city) => {
     return `${URL_WEATHER_API}/weather?q=${city}&appid=${WEAHTER_API}`;
   });
   const linksWithoutDublicates = [...new Set(linksGetWeather)];
 
-  let compareArrays = linksGetWeather.length === weatherInfo.length;
-
-  console.log(compareArrays);
+  const uniqueWeatherCard = new Set();
+  const unique = weatherInfo.filter((element) => {
+    const isDublicate = uniqueWeatherCard.has(element.data.id);
+    uniqueWeatherCard.add(element.data.id);
+    if (!isDublicate) {
+      return true;
+    }
+    return false;
+  });
 
   const getSavedWeatherCard = () => {
-    axios 
+    axios
       .all(linksWithoutDublicates.map((link) => axios.get(link)))
       .then((data) => {
         data.map((result) => setWeatherInfo((prev) => [...prev, result]));
@@ -31,27 +35,28 @@ export default function MainScreen() {
   };
 
   const handleAddCity = () => {
-    axios
-      .get(
-        `${URL_WEATHER_API}/weather?q=${queryParametr.q}&appid=${WEAHTER_API}`
-      )
-      .then((result) => {
-        setWeatherInfo((prev) => [...prev, result]);
-      });
+    if (Object.keys(queryParametr).length > 0) {
+      axios
+        .get(
+          `${URL_WEATHER_API}/weather?q=${queryParametr.q}&appid=${WEAHTER_API}`
+        )
+        .then((result) => {
+          setWeatherInfo((prev) => [...prev, result]);
+        });
+    }
   };
 
   useEffect(() => {
     if (weatherInfo.length === 0) {
       getSavedWeatherCard();
       console.log(linksWithoutDublicates);
-    } else if (weatherInfo.length > 0 && compareArrays) {
+    } else if (weatherInfo.length > 0) {
       handleAddCity();
     }
     console.log(weatherInfo);
-  }, [queryParametr.q]);
-
-  useEffect(() => {}, [queryParametr.q]);
-
+    console.log(unique);
+  }, [cityList, queryParametr]);
+ 
   return (
     <Container>
       <Row>
@@ -61,7 +66,7 @@ export default function MainScreen() {
         />
       </Row>
       <Row>
-        <Col>{weatherInfo && <CardWeather weatherInfo={weatherInfo} />}</Col>
+        <Col>{weatherInfo && <CardWeather weatherInfo={unique} />}</Col>
       </Row>
     </Container>
   );
