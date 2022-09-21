@@ -49,10 +49,19 @@ export default function MainScreen() {
   const deleteCity = (id, name) => {
     const filteredList = weatherInfo.filter((item) => item.data.id !== id);
     setWeatherInfo(filteredList);
-    const filteredLocalStorage = cityList.filter(
-      (item) => item !== name
-    );
+    const filteredLocalStorage = cityList.filter((item) => item !== name);
     setCityList(filteredLocalStorage);
+  };
+
+  const reloadCityCard = (name, index) => {
+    const updatedInfo = weatherInfo.slice();
+    axios
+      .get(`${URL_WEATHER_API}/weather?q=${name}&appid=${WEAHTER_API}`)
+      .then((result) => {
+        updatedInfo.splice(index, 1, result);
+        setWeatherInfo(updatedInfo);
+        console.log(updatedInfo);
+      }); 
   };
 
   useEffect(() => {
@@ -62,9 +71,10 @@ export default function MainScreen() {
     } else if (weatherInfo.length > 0) {
       handleAddCity();
     }
-    console.log(weatherInfo);
     console.log(unique);
   }, [cityList, queryParametr]);
+
+  useEffect(() => {}, [weatherInfo]);
 
   return (
     <Container>
@@ -77,7 +87,11 @@ export default function MainScreen() {
       <Row>
         <Col>
           {weatherInfo && (
-            <CardWeather weatherInfo={unique} deleteCity={deleteCity} />
+            <CardWeather
+              weatherInfo={unique}
+              deleteCity={deleteCity}
+              reloadCityCard={reloadCityCard}
+            />
           )}
         </Col>
       </Row>
