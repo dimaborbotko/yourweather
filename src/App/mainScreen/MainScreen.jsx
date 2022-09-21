@@ -46,6 +46,15 @@ export default function MainScreen() {
     }
   };
 
+  const deleteCity = (id, name) => {
+    const filteredList = weatherInfo.filter((item) => item.data.id !== id);
+    setWeatherInfo(filteredList);
+    const filteredLocalStorage = cityList.filter(
+      (item) => item !== name
+    );
+    setCityList(filteredLocalStorage);
+  };
+
   useEffect(() => {
     if (weatherInfo.length === 0) {
       getSavedWeatherCard();
@@ -56,7 +65,7 @@ export default function MainScreen() {
     console.log(weatherInfo);
     console.log(unique);
   }, [cityList, queryParametr]);
- 
+
   return (
     <Container>
       <Row>
@@ -66,7 +75,11 @@ export default function MainScreen() {
         />
       </Row>
       <Row>
-        <Col>{weatherInfo && <CardWeather weatherInfo={unique} />}</Col>
+        <Col>
+          {weatherInfo && (
+            <CardWeather weatherInfo={unique} deleteCity={deleteCity} />
+          )}
+        </Col>
       </Row>
     </Container>
   );
